@@ -363,6 +363,91 @@ border-bottom:1px solid rgba(255,255,255,.1);
 position:relative;
 z-index:1000; /* ADD THIS */
 }
+.price{
+display:flex;
+justify-content:center;
+gap:6px;
+flex-wrap:nowrap; /* IMPORTANT: prevents stacking */
+padding:8px 6px;
+overflow-x:auto; /* safety if screen is small */
+}
+
+.price-box{
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+
+min-width:55px;   /* smaller width */
+padding:6px 8px;
+border-radius:10px;
+
+background:rgba(255,255,255,0.05);
+border:1px solid rgba(255,255,255,0.1);
+
+transition:.3s;
+flex-shrink:0; /* prevents shrinking into new row */
+}
+
+.price-box:hover{
+transform:translateY(-2px);
+border-color:#38bdf8;
+box-shadow:0 0 10px rgba(56,189,248,.2);
+}
+
+.size{
+font-size:10px;
+opacity:.7;
+margin-bottom:2px;
+}
+
+.amount{
+font-size:12px;  /* smaller price */
+font-weight:600;
+color:#38bdf8;
+}
+.disclaimer{
+background:rgba(0,0,0,.55);
+border:1px solid rgba(56,189,248,.35);
+padding:14px 16px;
+border-radius:14px;
+font-size:12.5px;
+margin:15px auto 25px;
+max-width:650px;
+color:#e5e7eb;
+line-height:1.5;
+backdrop-filter:blur(8px);
+box-shadow:0 0 10px rgba(0,0,0,.3);
+}
+
+/* small label */
+.disclaimer::before{
+content:"⚠ NOTICE";
+display:block;
+font-weight:600;
+color:#38bdf8;
+margin-bottom:6px;
+letter-spacing:1px;
+}
+
+.price-box:hover{
+transform:translateY(-3px);
+border-color:#38bdf8;
+box-shadow:0 0 12px rgba(56,189,248,.25);
+}
+
+.size{
+font-size:11px;
+letter-spacing:1px;
+opacity:.7;
+margin-bottom:3px;
+}
+
+.amount{
+font-size:14px;
+font-weight:600;
+color:#38bdf8;
+}
 </style>
 </head>
 
@@ -428,12 +513,289 @@ z-index:1000; /* ADD THIS */
 <!-- PANELS -->
 <div id="milk" class="panel">
 <h2>Milk Tea Menu</h2>
+<div class="disclaimer">
+⚠️ Images are for reference only. Actual product appearance may vary.  
+✔ Prices shown are accurate and final.
+</div>
 <p class="desc">Creamy and refreshing drinks</p>
 <div class="items">
-<div class="card"><img src="https://images.unsplash.com/photo-1551024601-bec78aea704b"><h4>Chocolate Milk Tea</h4><p>₱70</p></div>
-<div class="card"><img src="https://images.unsplash.com/photo-1572490122747-3968b75cc699"><h4>Matcha Milk Tea</h4><p>₱80</p></div>
+<div class="card"><img src="avocado.png" style="width:250px; height:250px;"><h4>Avocado</h4><div class="price">
+
+<div class="price-box">
+<span class="size">L</span>
+<span class="amount">₱70</span>
 </div>
+
+<div class="price-box">
+<span class="size">XL</span>
+<span class="amount">₱80</span>
 </div>
+
+<div class="price-box">
+<span class="size">JUMBO</span>
+<span class="amount">₱110</span>
+</div>
+
+</div></div>
+<div class="card"><img src="choco milktea.jpg" style="width:250px; height:250px;"><h4>Chocolate</h4><div class="price">
+
+<div class="price-box">
+<span class="size">L</span>
+<span class="amount">₱70</span>
+</div>
+
+<div class="price-box">
+<span class="size">XL</span>
+<span class="amount">₱80</span>
+</div>
+
+<div class="price-box">
+<span class="size">JUMBO</span>
+<span class="amount">₱110</span>
+</div>
+
+</div></div>
+
+<div class="card"><img src="winter.png" style="width:250px; height:250px;"><h4>Wintermelon</h4><div class="price">
+
+<div class="price-box">
+<span class="size">L</span>
+<span class="amount">₱70</span>
+</div>
+
+<div class="price-box">
+<span class="size">XL</span>
+<span class="amount">₱80</span>
+</div>
+
+<div class="price-box">
+<span class="size">JUMBO</span>
+<span class="amount">₱110</span>
+</div>
+
+</div></div>
+<div class="card"><img src="matcha.png" style="width:250px; height:250px;"><h4>Matcha Milk Tea</h4><div class="price">
+
+<div class="price-box">
+<span class="size">L</span>
+<span class="amount">₱70</span>
+</div>
+
+<div class="price-box">
+<span class="size">XL</span>
+<span class="amount">₱80</span>
+</div>
+
+<div class="price-box">
+<span class="size">JUMBO</span>
+<span class="amount">₱110</span>
+</div>
+
+</div></div>
+
+<div class="card"><img src="vanilla.png" style="width:250px; height:250px;"><h4>Vanilla</h4><div class="price">
+
+<div class="price-box">
+<span class="size">L</span>
+<span class="amount">₱70</span>
+</div>
+
+<div class="price-box">
+<span class="size">XL</span>
+<span class="amount">₱80</span>
+</div>
+
+<div class="price-box">
+<span class="size">JUMBO</span>
+<span class="amount">₱110</span>
+</div>
+
+</div></div>
+<div class="card"><img src="mango.png" style="width:250px; height:250px;"><h4>Mango</h4><div class="price">
+
+<div class="price-box">
+<span class="size">L</span>
+<span class="amount">₱70</span>
+</div>
+
+<div class="price-box">
+<span class="size">XL</span>
+<span class="amount">₱80</span>
+</div>
+
+<div class="price-box">
+<span class="size">JUMBO</span>
+<span class="amount">₱110</span>
+</div>
+
+</div></div>
+
+<div class="card"><img src="taro.png" style="width:250px; height:250px;"><h4>Taro</h4><div class="price">
+
+<div class="price-box">
+<span class="size">L</span>
+<span class="amount">₱70</span>
+</div>
+
+<div class="price-box">
+<span class="size">XL</span>
+<span class="amount">₱80</span>
+</div>
+
+<div class="price-box">
+<span class="size">JUMBO</span>
+<span class="amount">₱110</span>
+</div>
+
+</div></div>
+<div class="card"><img src="okinawa.png" style="width:250px; height:250px;"><h4>Okinawa</h4><div class="price">
+
+<div class="price-box">
+<span class="size">L</span>
+<span class="amount">₱80</span>
+</div>
+
+<div class="price-box">
+<span class="size">XL</span>
+<span class="amount">₱90</span>
+</div>
+
+<div class="price-box">
+<span class="size">JUMBO</span>
+<span class="amount">₱110</span>
+</div>
+
+</div></div>
+
+<div class="card"><img src="Honeydew.png" style="width:250px; height:250px;"><h4>Honeydew</h4><div class="price">
+
+<div class="price-box">
+<span class="size">L</span>
+<span class="amount">₱80</span>
+</div>
+
+<div class="price-box">
+<span class="size">XL</span>
+<span class="amount">₱90</span>
+</div>
+
+<div class="price-box">
+<span class="size">JUMBO</span>
+<span class="amount">₱110</span>
+</div>
+
+</div></div>
+<div class="card"><img src="thai.png" style="width:250px; height:250px;"><h4>Thai</h4><div class="price">
+
+<div class="price-box">
+<span class="size">L</span>
+<span class="amount">₱80</span>
+</div>
+
+<div class="price-box">
+<span class="size">XL</span>
+<span class="amount">₱90</span>
+</div>
+
+<div class="price-box">
+<span class="size">JUMBO</span>
+<span class="amount">₱110</span>
+</div>
+
+</div></div>
+
+<div class="card"><img src="chocoblast.png" style="width:250px; height:250px;"><h4>Choco Blast</h4><div class="price">
+
+<div class="price-box">
+<span class="size">L</span>
+<span class="amount">₱80</span>
+</div>
+
+<div class="price-box">
+<span class="size">XL</span>
+<span class="amount">₱90</span>
+</div>
+
+<div class="price-box">
+<span class="size">JUMBO</span>
+<span class="amount">₱110</span>
+</div>
+
+</div></div>
+<div class="card"><img src="darkchoco.png" style="width:250px; height:250px;"><h4>Dark Choco</h4><div class="price">
+
+<div class="price-box">
+<span class="size">L</span>
+<span class="amount">₱80</span>
+</div>
+
+<div class="price-box">
+<span class="size">XL</span>
+<span class="amount">₱90</span>
+</div>
+
+<div class="price-box">
+<span class="size">JUMBO</span>
+<span class="amount">₱110</span>
+</div>
+
+</div></div>
+
+<div class="card"><img src="redvelvet.png" style="width:250px; height:250px;"><h4>Red Velvet</h4><div class="price">
+
+<div class="price-box">
+<span class="size">L</span>
+<span class="amount">₱80</span>
+</div>
+
+<div class="price-box">
+<span class="size">XL</span>
+<span class="amount">₱90</span>
+</div>
+
+<div class="price-box">
+<span class="size">JUMBO</span>
+<span class="amount">₱110</span>
+</div>
+
+</div></div>
+<div class="card"><img src="cheesecake.png" style="width:250px; height:250px;"><h4>Cheesecake</h4><div class="price">
+
+<div class="price-box">
+<span class="size">L</span>
+<span class="amount">₱80</span>
+</div>
+
+<div class="price-box">
+<span class="size">XL</span>
+<span class="amount">₱90</span>
+</div>
+
+<div class="price-box">
+<span class="size">JUMBO</span>
+<span class="amount">₱110</span>
+</div>
+
+</div></div>
+
+<div class="card"><img src="nutella.png" style="width:250px; height:250px;"><h4>Nutella</h4><div class="price">
+
+<div class="price-box">
+<span class="size">L</span>
+<span class="amount">₱80</span>
+</div>
+
+<div class="price-box">
+<span class="size">XL</span>
+<span class="amount">₱90</span>
+</div>
+
+<div class="price-box">
+<span class="size">JUMBO</span>
+<span class="amount">₱110</span>
+</div>
+
+</div></div></div></div>
 
 <div id="coffee" class="panel">
 <h2>Coffee Menu</h2>
