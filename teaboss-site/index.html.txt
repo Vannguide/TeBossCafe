@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TeaBoss Cafe</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  color: white;
+  background: linear-gradient(135deg, #6b8e23, #c49b63);
+}
+
+/* NAVBAR */
+nav {
+  position: sticky;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  background: rgba(0,0,0,0.4);
+  backdrop-filter: blur(10px);
+  z-index: 1000;
+}
+
+nav a {
+  padding: 15px 20px;
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+nav a:hover {
+  color: gold;
+}
+
+/* HERO */
+.hero {
+  height: 70vh;
+  background: url('images/hero.jpg') center/cover no-repeat;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.hero h1 {
+  font-size: 48px;
+  text-shadow: 0 5px 20px rgba(0,0,0,0.7);
+}
+
+/* SECTIONS */
+section {
+  max-width: 1100px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+h2 {
+  margin-bottom: 15px;
+  border-left: 5px solid gold;
+  padding-left: 10px;
+}
+
+/* GLASS CARD */
+.card {
+  background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(15px);
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+}
+
+/* MENU GRID */
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.menu-item {
+  display: flex;
+  justify-content: space-between;
+  margin: 8px 0;
+  border-bottom: 1px dashed rgba(255,255,255,0.3);
+}
+
+/* SLIDER */
+.slider {
+  position: relative;
+  overflow: hidden;
+  border-radius: 15px;
+}
+
+.slides {
+  display: flex;
+  width: 300%;
+  animation: slide 12s infinite;
+}
+
+.slides img {
+  width: 100%;
+}
+
+@keyframes slide {
+  0% {transform: translateX(0);}
+  33% {transform: translateX(-100%);}
+  66% {transform: translateX(-200%);}
+  100% {transform: translateX(0);}
+}
+
+/* FOOTER */
+footer {
+  text-align: center;
+  padding: 20px;
+  background: rgba(0,0,0,0.3);
+}
+
+/* MOBILE */
+@media (max-width: 600px) {
+  .hero h1 {
+    font-size: 28px;
+  }
+
+  nav {
+    flex-wrap: wrap;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+  <a href="#home">Home</a>
+  <a href="#gallery">Gallery</a>
+  <a href="#menu">Menu</a>
+  <a href="#contact">Contact</a>
+</nav>
+
+<section class="hero" id="home">
+  <h1>TeaBoss Cafe</h1>
+</section>
+
+<section id="gallery">
+  <h2>Our Menu</h2>
+  <div class="slider">
+    <div class="slides">
+      <img src="images/menu1.jpg">
+      <img src="images/menu2.jpg">
+      <img src="images/menu3.jpg">
+    </div>
+  </div>
+</section>
+
+<section id="menu">
+  <h2>Popular Items</h2>
+  <div class="menu-grid">
+
+    <div class="card">
+      <h3>Milk Tea</h3>
+      <div class="menu-item"><span>Okinawa</span><span>80 / 90 / 110</span></div>
+      <div class="menu-item"><span>Matcha</span><span>80 / 90 / 110</span></div>
+      <div class="menu-item"><span>Taro</span><span>70 / 80 / 100</span></div>
+    </div>
+
+    <div class="card">
+      <h3>Coffee</h3>
+      <div class="menu-item"><span>Americano</span><span>60 / 70 / 80</span></div>
+      <div class="menu-item"><span>Cappuccino</span><span>80 / 90 / 100</span></div>
+      <div class="menu-item"><span>Mocha</span><span>90 / 100 / 110</span></div>
+    </div>
+
+    <div class="card">
+      <h3>Meals</h3>
+      <div class="menu-item"><span>Chicken Siomai</span><span>79</span></div>
+      <div class="menu-item"><span>Fish Fillet</span><span>89</span></div>
+      <div class="menu-item"><span>Burger Steak</span><span>129</span></div>
+    </div>
+
+    <div class="card">
+      <h3>Snacks</h3>
+      <div class="menu-item"><span>Fries</span><span>80</span></div>
+      <div class="menu-item"><span>Nachos</span><span>170</span></div>
+      <div class="menu-item"><span>Wings</span><span>170</span></div>
+    </div>
+
+  </div>
+</section>
+
+<section id="contact">
+  <h2>Contact</h2>
+  <div class="card">
+    <p>📍 Your Location</p>
+    <p>📞 09XXXXXXXXX</p>
+    <p>📘 TeaBoss Cafe</p>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 TeaBoss Cafe</p>
+</footer>
+
+</body>
+</html>

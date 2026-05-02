@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TeaBoss Cafe</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+height:100vh;
+overflow:hidden;
+color:#fff;
+display:flex;
+flex-direction:column;
+min-height:100vh;
+overflow-x:hidden;
+}
+
+/* BACKGROUND */
+body::before{
+content:"";
+position:fixed;
+inset:0;
+background:url('https://images.unsplash.com/photo-1517701604599-bb29b565090c') center/cover no-repeat;
+z-index:-2;
+}
+
+body::after{
+content:"";
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.75);
+z-index:-1;
+}
+
+/* NAVBAR */
+nav{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:18px 25px;
+background:rgba(0,0,0,.5);
+backdrop-filter:blur(12px);
+border-bottom:1px solid rgba(255,255,255,.1);
+position:relative;
+}
+
+nav h1{
+font-size:1.4rem;
+letter-spacing:3px;
+}
+
+/* MENU */
+.menu{
+display:flex;
+gap:18px;
+align-items:center;
+}
+
+.menu a{
+color:#fff;
+text-decoration:none;
+font-size:15px;
+padding:8px 12px;
+border-radius:8px;
+opacity:.8;
+transition:.3s;
+}
+
+.menu a:hover{
+background:rgba(56,189,248,.2);
+opacity:1;
+color:#38bdf8;
+}
+
+/* BACK BUTTON */
+.back-btn{
+cursor:pointer;
+padding:8px 12px;
+border-radius:8px;
+background:rgba(255,255,255,.08);
+transition:.3s;
+display:none;
+}
+
+.back-btn:hover{
+background:rgba(56,189,248,.2);
+color:#38bdf8;
+}
+
+/* HAMBURGER */
+.hamburger{
+display:none;
+font-size:26px;
+cursor:pointer;
+padding:6px 10px;
+border-radius:8px;
+background:rgba(255,255,255,.08);
+}
+
+/* WRAPPER */
+.wrapper{
+flex:1;
+display:flex;
+align-items:center;
+justify-content:center;
+padding:20px;
+}
+
+/* HOME GRID */
+.grid-home{
+display:grid;
+grid-template-columns:repeat(2,700px);
+grid-template-rows:repeat(2,500px);
+gap:20px;
+justify-content:center;
+}
+
+/* BOX */
+.box{
+position:relative;
+border-radius:20px;
+overflow:hidden;
+cursor:pointer;
+transition:.3s;
+border:1px solid rgba(255,255,255,.15);
+}
+
+.box:hover{
+transform:scale(1.03);
+border-color:#38bdf8;
+}
+
+.box img{
+width:100%;
+height:100%;
+object-fit:cover;
+filter:brightness(.7);
+}
+
+.box-content{
+position:absolute;
+bottom:0;
+left:0;
+right:0;
+padding:25px;
+background:linear-gradient(to top,rgba(0,0,0,.85),transparent);
+}
+
+.box-content h3{
+font-size:1.7rem;
+margin-bottom:8px;
+}
+
+.box-content p{
+font-size:13px;
+opacity:.8;
+line-height:1.4;
+}
+
+/* PANELS */
+.panel{
+display:none;
+width:100%;
+max-width:1000px;
+text-align:center;
+}
+
+.panel.active{
+display:block;
+animation:fade .3s ease;
+}
+
+@keyframes fade{
+from{opacity:0;transform:translateY(10px)}
+to{opacity:1;transform:translateY(0)}
+}
+
+.panel h2{
+font-size:1.9rem;
+margin-bottom:10px;
+}
+
+.desc{
+opacity:.7;
+font-size:14px;
+margin-bottom:20px;
+}
+
+/* ITEMS */
+.items{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:15px;
+}
+
+.card{
+background:rgba(255,255,255,.06);
+border-radius:15px;
+overflow:hidden;
+border:1px solid rgba(255,255,255,.1);
+transition:.3s;
+}
+
+.card:hover{
+transform:translateY(-6px);
+border-color:#38bdf8;
+}
+
+.card img{
+width:100%;
+height:140px;
+object-fit:cover;
+}
+
+.card h4{
+padding:10px 10px 0;
+font-size:14px;
+}
+
+.card p{
+padding:0 10px 15px;
+font-size:13px;
+opacity:.7;
+}
+
+/* MOBILE */
+@media(max-width:1500px){
+.grid-home{
+grid-template-columns:repeat(2,1fr);
+grid-template-rows:auto;
+}
+}
+
+@media(max-width:768px){
+
+.menu{
+display:none;
+position:absolute;
+top:70px;
+right:20px;
+flex-direction:column;
+background:rgba(0,0,0,.9);
+padding:15px;
+border-radius:12px;
+width:200px;
+}
+
+.menu.active{
+display:flex;
+}
+
+.hamburger{
+display:block;
+}
+}
+/* FOOTER */
+footer{
+background:rgba(0,0,0,.6);
+backdrop-filter:blur(10px);
+border-top:1px solid rgba(255,255,255,.1);
+padding:20px;
+text-align:center;
+font-size:14px;
+}
+
+footer h3{
+margin-bottom:10px;
+font-size:16px;
+letter-spacing:1px;
+}
+
+footer p{
+opacity:.8;
+margin:4px 0;
+}
+
+footer .socials{
+margin-top:10px;
+}
+
+footer .socials a{
+color:#38bdf8;
+text-decoration:none;
+margin:0 8px;
+font-size:14px;
+transition:.3s;
+}
+
+footer .socials a:hover{
+opacity:.7;
+}
+.link-btn{
+display:inline-block;
+padding:10px 18px;
+border-radius:10px;
+background:rgba(56,189,248,0.15);
+color:#38bdf8;
+text-decoration:none;
+font-size:14px;
+border:1px solid rgba(56,189,248,0.4);
+transition:.3s;
+position:relative;
+overflow:hidden;
+}
+
+.link-btn:hover{
+background:#38bdf8;
+color:#000;
+box-shadow:0 0 15px rgba(56,189,248,0.7),
+            0 0 30px rgba(56,189,248,0.5);
+}
+a{
+transition:all .25s ease;
+}
+a{
+color:#e5e7eb;
+text-decoration:none;
+position:relative;
+transition:all .25s ease;
+}
+
+/* subtle underline (hidden by default) */
+a::after{
+content:"";
+position:absolute;
+left:0;
+bottom:-3px;
+width:0%;
+height:2px;
+background:#38bdf8;
+transition:.3s ease;
+border-radius:2px;
+}
+
+/* hover effect */
+a:hover{
+color:#38bdf8;
+text-shadow:0 0 8px rgba(56,189,248,0.6);
+}
+
+/* animate underline */
+a:hover::after{
+width:100%;
+}
+nav{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:18px 25px;
+background:rgba(0,0,0,.5);
+backdrop-filter:blur(12px);
+border-bottom:1px solid rgba(255,255,255,.1);
+position:relative;
+z-index:1000; /* ADD THIS */
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAV -->
+<nav>
+<h1>TEABOSS CAFE</h1>
+
+<div class="hamburger" onclick="toggleMenu()">☰</div>
+
+<div class="menu" id="menu">
+<a href="#" onclick="goHome();closeMenu()">Home</a>
+<a href="#" onclick="openPanel('milk');closeMenu()">Milk Tea</a>
+<a href="#" onclick="openPanel('coffee');closeMenu()">Coffee</a>
+<a href="#" onclick="openPanel('snacks');closeMenu()">Snacks</a>
+<a href="#" onclick="openPanel('meals');closeMenu()">Meals</a>
+</div>
+
+<div class="back-btn" onclick="goHome()">← Back</div>
+</nav>
+
+<!-- MAIN -->
+<div class="wrapper">
+
+<!-- HOME -->
+<div id="home" class="grid-home">
+
+<div class="box" onclick="openPanel('milk')">
+<img src="milktea.jpg">
+<div class="box-content">
+<h3>Milk Tea</h3>
+<p>Signature creamy milk teas made with premium ingredients and brown sugar pearls.</p>
+</div>
+</div>
+
+<div class="box" onclick="openPanel('coffee')">
+<img src="coffee.jpg">
+<div class="box-content">
+<h3>Coffee</h3>
+<p>Fresh brewed coffee blends for energy, focus, and relaxation.</p>
+</div>
+</div>
+
+<div class="box" onclick="openPanel('snacks')">
+<img src="snacks.jpg">
+<div class="box-content">
+<h3>Snacks</h3>
+<p>Crispy fries and cheesy nachos made fresh daily.</p>
+</div>
+</div>
+
+<div class="box" onclick="openPanel('meals')">
+<img src="meals.jpg">
+<div class="box-content">
+<h3>Meals</h3>
+<p>Hearty Filipino rice meals full of flavor and satisfaction.</p>
+</div>
+</div>
+
+</div>
+
+<!-- PANELS -->
+<div id="milk" class="panel">
+<h2>Milk Tea Menu</h2>
+<p class="desc">Creamy and refreshing drinks</p>
+<div class="items">
+<div class="card"><img src="https://images.unsplash.com/photo-1551024601-bec78aea704b"><h4>Chocolate Milk Tea</h4><p>₱70</p></div>
+<div class="card"><img src="https://images.unsplash.com/photo-1572490122747-3968b75cc699"><h4>Matcha Milk Tea</h4><p>₱80</p></div>
+</div>
+</div>
+
+<div id="coffee" class="panel">
+<h2>Coffee Menu</h2>
+<p class="desc">Fresh brewed coffee selection</p>
+<div class="items">
+<div class="card"><img src="https://images.unsplash.com/photo-1498804103079-a6351b050096"><h4>Latte</h4><p>₱80</p></div>
+<div class="card"><img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93"><h4>Americano</h4><p>₱60</p></div>
+</div>
+</div>
+
+<div id="snacks" class="panel">
+<h2>Snacks</h2>
+<p class="desc">Quick bites & cravings</p>
+<div class="items">
+<div class="card"><img src="https://images.unsplash.com/photo-1550547660-d9450f859349"><h4>Fries</h4><p>₱80</p></div>
+<div class="card"><img src="https://images.unsplash.com/photo-1600891964599-f61ba0e24092"><h4>Nachos</h4><p>₱170</p></div>
+</div>
+</div>
+
+<div id="meals" class="panel">
+<h2>Meals</h2>
+<p class="desc">Filipino comfort food</p>
+<div class="items">
+<div class="card"><img src="https://images.unsplash.com/photo-1604908176997-125f25cc6f3d"><h4>Sisig Rice</h4><p>₱119</p></div>
+<div class="card"><img src="https://images.unsplash.com/photo-1601050690597-df0568f70950"><h4>Chicken Fillet</h4><p>₱104</p></div>
+</div>
+</div>
+
+</div>
+
+<script>
+
+const home=document.getElementById("home");
+const panels=document.querySelectorAll(".panel");
+const menu=document.getElementById("menu");
+const back=document.querySelector(".back-btn");
+
+function openPanel(id){
+home.style.display="none";
+panels.forEach(p=>p.classList.remove("active"));
+document.getElementById(id).classList.add("active");
+back.style.display="block";
+}
+
+function goHome(){
+panels.forEach(p=>p.classList.remove("active"));
+home.style.display="grid";
+back.style.display="none";
+}
+
+function toggleMenu(){
+menu.classList.toggle("active");
+}
+
+function closeMenu(){
+menu.classList.remove("active");
+}
+
+</script>
+<footer>
+<h3>Contact Us</h3>
+<p>📍 Alaminos City, Pangasinan</p>
+<p>📞 0927-048-1775</p>
+<p>📧 <a href="https://www.facebook.com/teabosscafe01">Tea Boss Cafe</a></p>
+</div>
+
+<p style="margin-top:10px; font-size:12px; opacity:.6;">
+</p>
+</footer>
+</body>
+</html>
