@@ -14,10 +14,33 @@ padding:0;
 box-sizing:border-box;
 font-family:'Poppins',sans-serif;
 }
+/* ===== GLOBAL SCROLLBAR ===== */
+::-webkit-scrollbar{
+width:10px;
+height:8px; /* for horizontal scroll (menu) */
+}
+
+::-webkit-scrollbar-track{
+background:rgba(0,0,0,0.6);
+backdrop-filter:blur(8px);
+border-radius:10px;
+}
+
+::-webkit-scrollbar-thumb{
+background:linear-gradient(180deg,#38bdf8,#0ea5e9);
+border-radius:10px;
+border:2px solid rgba(0,0,0,0.4);
+transition:.3s;
+}
+
+::-webkit-scrollbar-thumb:hover{
+background:linear-gradient(180deg,#60d5ff,#38bdf8);
+box-shadow:0 0 10px rgba(56,189,248,0.6);
+}
 
 body{
 height:100vh;
-overflow:hidden;
+overflow-y:auto;
 color:#fff;
 display:flex;
 flex-direction:column;
