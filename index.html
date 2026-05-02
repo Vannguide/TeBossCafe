@@ -6,7 +6,7 @@
 <title>TeaBoss Cafe</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
 <style>
 *{
 margin:0;
@@ -20,7 +20,7 @@ text-align:center;
 }
 
 .hero{
-padding:80px 20px 30px; /* reduced from 120px */
+padding:120px 20px 40px;
 }
 
 .hero h1{
@@ -32,32 +32,6 @@ margin-bottom:10px;
 .hero p{
 opacity:.8;
 margin-bottom:20px;
-}
-#milk{
-margin-bottom: 250px;
-}
-body::after{
-content:"";
-position:fixed;
-inset:0;
-
-/* gradient overlay = premium look */
-background:linear-gradient(
-to bottom,
-rgba(0,0,0,.65),
-rgba(0,0,0,.75),
-rgba(0,0,0,.85)
-);
-
-z-index:-1;
-}
-body::before{
-content:"";
-position:fixed;
-inset:0;
-background:url('https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
-z-index:-2;
-transform:scale(1.05);
 }
 
 .hero-btn{
@@ -72,11 +46,9 @@ transition:.3s;
 }
 
 .hero-btn:hover{
-color:#000 !important;
-text-shadow:none !important;
-background:#60d5ff;
+transform:scale(1.05);
+box-shadow:0 0 20px rgba(56,189,248,.5);
 }
-
 
 .home-grid{
 display:grid;
@@ -137,11 +109,13 @@ box-shadow:0 0 10px rgba(56,189,248,0.6);
 }
 
 body{
-min-height:100vh;
+height:100vh;
+overflow-y:auto;
+color:#fff;
 display:flex;
 flex-direction:column;
+min-height:100vh;
 overflow-x:hidden;
-color:#fff;
 }
 
 /* BACKGROUND */
@@ -206,10 +180,6 @@ background:rgba(56,189,248,.2);
 opacity:1;
 color:#38bdf8;
 }
-a:not(.hero-btn):hover{
-color:#38bdf8;
-text-shadow:0 0 8px rgba(56,189,248,0.6);
-}
 
 /* BACK BUTTON */
 .back-btn{
@@ -219,17 +189,6 @@ border-radius:8px;
 background:rgba(255,255,255,.08);
 transition:.3s;
 display:none;
-}
-#home{
-width:100%;
-max-width:1200px;
-margin:0 auto;
-}
-
-.panel{
-width:100%;
-max-width:1100px;
-margin:0 auto;
 }
 
 .back-btn:hover{
@@ -253,9 +212,18 @@ flex:1;
 display:flex;
 flex-direction:column;
 align-items:center;
-
+justify-content:flex-start;
 padding:100px 20px 40px;
 width:100%;
+}
+
+/* HOME GRID */
+.grid-home{
+display:grid;
+grid-template-columns:repeat(2,700px);
+grid-template-rows:repeat(2,500px);
+gap:20px;
+justify-content:center;
 }
 
 /* BOX */
@@ -309,17 +277,12 @@ line-height:1.4;
 display:none;
 width:100%;
 max-width:1100px;
-
-/* CENTER FIX */
-margin:0 auto;
 text-align:center;
+margin:0 auto;
 }
 
 .panel.active{
 display:block;
-}
-.panel .items{
-justify-content:center;
 }
 
 @keyframes fade{
@@ -342,7 +305,7 @@ margin-bottom:20px;
 .items{
 display:grid;
 grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
-gap:15px;
+gap:18px;
 justify-content:center;
 align-items:stretch;
 width:100%;
@@ -408,12 +371,8 @@ opacity:.7;
 /* MOBILE */
 @media(max-width:1500px){
 .grid-home{
-display:grid;
 grid-template-columns:repeat(2,1fr);
-gap:20px;
-width:100%;
-max-width:1200px;
-margin:0 auto;
+grid-template-rows:auto;
 }
 }
 
@@ -441,15 +400,12 @@ display:block;
 }
 /* FOOTER */
 footer{
-margin-top:auto; /* pushes footer to bottom naturally */
-
 background:rgba(0,0,0,.6);
 backdrop-filter:blur(10px);
 border-top:1px solid rgba(255,255,255,.1);
 padding:20px;
 text-align:center;
 font-size:14px;
-width:100%;
 }
 
 footer h3{
@@ -908,6 +864,9 @@ padding-left:10px;
 #snacks{
 margin-top:-20px;
 }
+#milk{
+    margin-bottom: 250px;
+}
 </style>
 </head>
 
@@ -1198,39 +1157,32 @@ const menu=document.getElementById("menu");
 const back=document.querySelector(".back-btn");
 
 function openPanel(id){
-document.getElementById("home").style.display="none";
-
-document.querySelectorAll(".panel").forEach(p=>{
-p.classList.remove("active");
-p.style.display="none";
-});
-
-const panel=document.getElementById(id);
-panel.classList.add("active");
-panel.style.display="block";
-
-document.querySelector(".back-btn").style.display="block";
+home.style.display="none";
+panels.forEach(p=>p.classList.remove("active"));
+document.getElementById(id).classList.add("active");
+back.style.display="block";
 }
 
 function goHome(){
-document.querySelectorAll(".panel").forEach(p=>{
-p.classList.remove("active");
-p.style.display="none";
-});
-
-document.getElementById("home").style.display="grid";
-document.querySelector(".back-btn").style.display="none";
+panels.forEach(p=>p.classList.remove("active"));
+home.style.display="grid";
+back.style.display="none";
 }
 
-</script>
-<br><br>
+function toggleMenu(){
+menu.classList.toggle("active");
+}
+
+function closeMenu(){
+menu.classList.remove("active");
+}
+
+</script><br><br>
 <footer>
 <h3>Contact Us</h3>
 <p>📍 Alaminos City, Pangasinan</p>
 <p>📞 0927-048-1775</p>
-<p><a class="social-btn facebook" href="https://www.facebook.com/teabosscafe01" target="_blank">
-<i class="fa-brands fa-facebook"></i> Tea Boss Cafe
-</a></p>
+<p>📧 <a href="https://www.facebook.com/teabosscafe01">Tea Boss Cafe</a></p>
 </div>
 
 <p style="margin-top:10px; font-size:12px; opacity:.6;">
