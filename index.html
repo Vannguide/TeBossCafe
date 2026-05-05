@@ -940,6 +940,8 @@ align-items:center;
 justify-content:center;
 z-index:99999;
 flex-direction:column;
+touch-action:none;
+overscroll-behavior:contain;
 }
 
 .lightbox img{
@@ -959,20 +961,38 @@ transform:translateX(60px);
 opacity:0;
 }
 
-.lightbox-controls{
-margin-top:15px;
-display:flex;
-gap:10px;
+.lightbox-controls button{
+background:rgba(0,0,0,0.35);
+border:1px solid rgba(56,189,248,0.35);
+color:#e5e7eb;
+
+padding:10px 14px;
+border-radius:12px;
+font-size:13px;
+
+cursor:pointer;
+transition:.3s ease;
+
+backdrop-filter:blur(10px);
+-webkit-backdrop-filter:blur(10px);
+
+box-shadow:0 6px 18px rgba(0,0,0,0.35);
 }
 
-.lightbox button{
-padding:10px 14px;
-border:none;
-border-radius:8px;
-cursor:pointer;
-background:#38bdf8;
-color:#000;
-font-weight:600;
+/* hover = neon glow */
+.lightbox-controls button:hover{
+background:rgba(56,189,248,0.18);
+border-color:#38bdf8;
+color:#38bdf8;
+
+transform:translateY(-2px);
+box-shadow:0 0 12px rgba(56,189,248,0.4);
+}
+
+/* active press effect */
+.lightbox-controls button:active{
+transform:scale(0.96);
+box-shadow:0 0 6px rgba(56,189,248,0.2);
 }
 .gallery-filters{
 display:flex;
@@ -1114,7 +1134,17 @@ filter:none !important;
 -webkit-filter:none !important;
 opacity:1 !important;
 }
+@media(max-width:768px){
+.lightbox-controls{
+bottom:10px;
+gap:6px;
+}
 
+.lightbox-controls button{
+padding:8px 10px;
+font-size:12px;
+}
+}
 </style>
 </head>
 
@@ -1536,36 +1566,57 @@ img.className = "";
 img.src = src;
 box.style.display = "flex";
 }
-
-/* SLIDE EFFECT CORE */
-function showImage(direction){
-
-const img = document.getElementById("lightbox-img");
-
-img.classList.add(direction === "next" ? "slide-left" : "slide-right");
-
-setTimeout(()=>{
-img.src = images[currentIndex];
-img.classList.remove("slide-left","slide-right");
-}, 150);
-}
-
-/* NEXT */
-function nextImage(){
-currentIndex = (currentIndex + 1) % images.length;
-showImage("next");
-}
-
-/* PREV */
-function prevImage(){
-currentIndex = (currentIndex - 1 + images.length) % images.length;
-showImage("prev");
-}
-
-/* CLOSE */
 function closeLightbox(){
 document.getElementById("lightbox").style.display = "none";
 }
+
+/* SLIDE EFFECT CORE */
+document.addEventListener("DOMContentLoaded", () => {
+
+let startX = 0;
+let startY = 0;
+
+const lightbox = document.getElementById("lightbox");
+
+if(!lightbox) return;
+
+/* IMPORTANT: ensure touch events are captured */
+lightbox.style.touchAction = "none";
+
+/* TOUCH START */
+lightbox.addEventListener("touchstart", (e) => {
+startX = e.touches[0].clientX;
+startY = e.touches[0].clientY;
+}, { passive: true });
+
+/* TOUCH END */
+lightbox.addEventListener("touchend", (e) => {
+
+let endX = e.changedTouches[0].clientX;
+let endY = e.changedTouches[0].clientY;
+
+let diffX = startX - endX;
+let diffY = startY - endY;
+
+/* ignore vertical scroll */
+if(Math.abs(diffY) > Math.abs(diffX)) return;
+
+/* swipe threshold */
+if(Math.abs(diffX) < 40) return;
+
+/* LEFT → NEXT */
+if(diffX > 0){
+nextImage();
+}
+
+/* RIGHT → PREV */
+else{
+prevImage();
+}
+
+});
+
+});
 
 /* NAVIGATION */
 function nextImage(){
@@ -1710,7 +1761,7 @@ prevImage();
 <div class="lightbox-controls">
 <button onclick="prevImage()">Prev</button>
 <button onclick="nextImage()">Next</button>
-<button onclick="closeLightbox()">Close</button>
+<button class="close-btn" onclick="closeLightbox()">✖</button>
 </div>
 
 <!-- THUMBNAILS -->
