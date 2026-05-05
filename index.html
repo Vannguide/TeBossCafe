@@ -934,23 +934,62 @@ background:#60d5ff;
 .lightbox{
 position:fixed;
 inset:0;
-background:rgba(0,0,0,0.9);
 display:none;
-align-items:center;
 justify-content:center;
+align-items:center;
+
+background:rgba(0,0,0,0.98);
 z-index:99999;
-flex-direction:column;
-touch-action:none;
-overscroll-behavior:contain;
+
+overflow:hidden;
 }
 
 .lightbox img{
-max-width:95vw;
-max-height:90vh;
+max-width:100vw;
+max-height:100vh;
 object-fit:contain;
-transition:transform .35s ease, opacity .35s ease;
+
+transition:opacity .3s ease;
 }
 
+/* controls hidden by default */
+.lightbox-controls{
+position:absolute;
+bottom:20px;
+left:50%;
+transform:translateX(-50%);
+
+display:flex;
+gap:10px;
+
+opacity:0;
+pointer-events:none;
+
+transition:.3s ease;
+}
+
+/* show controls when active */
+.lightbox.show-ui .lightbox-controls{
+opacity:1;
+pointer-events:auto;
+}
+
+/* close button hidden until UI is shown */
+.close-btn{
+position:absolute;
+top:15px;
+right:20px;
+
+opacity:0;
+pointer-events:none;
+
+transition:.3s ease;
+}
+
+.lightbox.show-ui .close-btn{
+opacity:1;
+pointer-events:auto;
+}
 .slide-left{
 transform:translateX(-60px);
 opacity:0;
@@ -1548,13 +1587,15 @@ img.style.display="none";
 
 let images = [];
 let currentIndex = 0;
+let uiTimeout;
 
+/* collect images */
 function updateImages(){
-images = [...document.querySelectorAll("img")]
-.filter(img => img.closest("#gallery, #foodGallery, #placeGallery"))
+images = [...document.querySelectorAll(".drinks, .food, .place")]
 .map(img => img.src);
 }
 
+/* OPEN */
 function openLightbox(src){
 updateImages();
 currentIndex = images.indexOf(src);
@@ -1562,12 +1603,44 @@ currentIndex = images.indexOf(src);
 const box = document.getElementById("lightbox");
 const img = document.getElementById("lightbox-img");
 
-img.className = "";
 img.src = src;
 box.style.display = "flex";
+
+showUI(); // show controls briefly
 }
-function closeLightbox(){
+
+/* CLOSE */
+function closeLightbox(e){
+if(e) e.stopPropagation();
 document.getElementById("lightbox").style.display = "none";
+}
+
+/* NEXT / PREV */
+function nextImage(){
+currentIndex = (currentIndex + 1) % images.length;
+document.getElementById("lightbox-img").src = images[currentIndex];
+}
+
+function prevImage(){
+currentIndex = (currentIndex - 1 + images.length) % images.length;
+document.getElementById("lightbox-img").src = images[currentIndex];
+}
+
+/* IMMERSIVE UI CONTROL */
+function showUI(){
+const box = document.getElementById("lightbox");
+
+box.classList.add("show-ui");
+
+clearTimeout(uiTimeout);
+
+uiTimeout = setTimeout(()=>{
+box.classList.remove("show-ui");
+}, 2000);
+}
+
+function toggleUI(){
+showUI();
 }
 
 /* SLIDE EFFECT CORE */
@@ -1755,17 +1828,16 @@ prevImage();
 }
 
 </script>
-<div class="lightbox" id="lightbox">
+<div class="lightbox" id="lightbox" onclick="toggleUI()">
+
+<button class="close-btn" onclick="closeLightbox(event)">✖</button>
+
 <img id="lightbox-img">
 
-<div class="lightbox-controls">
-<button onclick="prevImage()">Prev</button>
-<button onclick="nextImage()">Next</button>
-<button class="close-btn" onclick="closeLightbox()">✖</button>
+<div class="lightbox-controls" id="controls">
+<button onclick="prevImage()">⬅</button>
+<button onclick="nextImage()">➡</button>
 </div>
-
-<!-- THUMBNAILS -->
-<div class="thumb-strip" id="thumbStrip"></div>
 
 </div>
 </body>
