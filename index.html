@@ -943,10 +943,20 @@ flex-direction:column;
 }
 
 .lightbox img{
-max-width:90%;
-max-height:80%;
-border-radius:12px;
-box-shadow:0 10px 30px rgba(0,0,0,0.5);
+max-width:95vw;
+max-height:90vh;
+object-fit:contain;
+transition:transform .35s ease, opacity .35s ease;
+}
+
+.slide-left{
+transform:translateX(-60px);
+opacity:0;
+}
+
+.slide-right{
+transform:translateX(60px);
+opacity:0;
 }
 
 .lightbox-controls{
@@ -1058,11 +1068,6 @@ color:#000;
 font-weight:600;
 }
 /* BLUR UP LOADING */
-.gallery-grid img{
-filter: blur(8px);
-transform: scale(1.02);
-transition: filter .5s ease, transform .3s ease;
-}
 
 .gallery-grid img.loaded{
 filter: blur(0);
@@ -1104,6 +1109,12 @@ border-radius:8px;
 cursor:pointer;
 font-weight:600;
 }
+img{
+filter:none !important;
+-webkit-filter:none !important;
+opacity:1 !important;
+}
+
 </style>
 </head>
 
@@ -1507,36 +1518,53 @@ img.style.display="none";
 
 let images = [];
 let currentIndex = 0;
-let slideshow = null;
 
 function updateImages(){
-const imgs = document.querySelectorAll("#gallery img");
-images = [...imgs].map(img => img.src);
-
-imgs.forEach(img=>{
-img.classList.remove("loaded");
-img.onload = ()=> img.classList.add("loaded");
-if(img.complete) img.classList.add("loaded");
-});
+images = [...document.querySelectorAll("img")]
+.filter(img => img.closest("#gallery, #foodGallery, #placeGallery"))
+.map(img => img.src);
 }
 
-updateImages();
-
-/* OPEN LIGHTBOX */
 function openLightbox(src){
 updateImages();
 currentIndex = images.indexOf(src);
 
-document.getElementById("lightbox").style.display="flex";
-document.getElementById("lightbox-img").src = src;
+const box = document.getElementById("lightbox");
+const img = document.getElementById("lightbox-img");
 
-renderThumbnails();
+img.className = "";
+img.src = src;
+box.style.display = "flex";
+}
+
+/* SLIDE EFFECT CORE */
+function showImage(direction){
+
+const img = document.getElementById("lightbox-img");
+
+img.classList.add(direction === "next" ? "slide-left" : "slide-right");
+
+setTimeout(()=>{
+img.src = images[currentIndex];
+img.classList.remove("slide-left","slide-right");
+}, 150);
+}
+
+/* NEXT */
+function nextImage(){
+currentIndex = (currentIndex + 1) % images.length;
+showImage("next");
+}
+
+/* PREV */
+function prevImage(){
+currentIndex = (currentIndex - 1 + images.length) % images.length;
+showImage("prev");
 }
 
 /* CLOSE */
 function closeLightbox(){
-document.getElementById("lightbox").style.display="none";
-stopSlideshow();
+document.getElementById("lightbox").style.display = "none";
 }
 
 /* NAVIGATION */
@@ -1648,7 +1676,6 @@ event.target.classList.add("active");
 <div class="lightbox-controls">
 <button onclick="prevImage()">Prev</button>
 <button onclick="nextImage()">Next</button>
-<button onclick="toggleSlideshow()" class="slideshow-btn">Play</button>
 <button onclick="closeLightbox()">Close</button>
 </div>
 
