@@ -1646,6 +1646,7 @@ if(e.key==="ArrowLeft") prevImage();
 }
 });
 
+
 </script><br><br>
 <footer>
 <h3>Contact Us</h3>
@@ -1668,9 +1669,42 @@ document.querySelectorAll(".tab-btn").forEach(b=>b.classList.remove("active"));
 event.target.classList.add("active");
 }
 
+
+</script>
+<script>
+let startX = 0;
+let endX = 0;
+
+const lightbox = document.getElementById("lightbox");
+
+/* TOUCH START */
+lightbox.addEventListener("touchstart", function(e){
+startX = e.touches[0].clientX;
+});
+
+/* TOUCH END */
+lightbox.addEventListener("touchend", function(e){
+endX = e.changedTouches[0].clientX;
+
+handleSwipe();
+});
+
+function handleSwipe(){
+let diff = startX - endX;
+
+/* swipe left → next */
+if(diff > 50){
+nextImage();
+}
+
+/* swipe right → prev */
+if(diff < -50){
+prevImage();
+}
+}
+
 </script>
 <div class="lightbox" id="lightbox">
-
 <img id="lightbox-img">
 
 <div class="lightbox-controls">
