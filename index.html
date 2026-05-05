@@ -876,6 +876,234 @@ margin-top:-20px;
 #milk{
     margin-bottom: 250px;
 }
+.gallery-grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:12px;
+
+/* SCROLL SYSTEM */
+max-height:520px;
+overflow-y:auto;
+padding:10px;
+border-radius:14px;
+
+/* smooth feel */
+scroll-behavior:smooth;
+
+/* glass effect */
+background:rgba(255,255,255,0.03);
+border:1px solid rgba(255,255,255,0.08);
+backdrop-filter:blur(8px);
+}
+
+/* IMAGE STYLE */
+.gallery-grid img{
+width:100%;
+height:160px;
+object-fit:cover;
+border-radius:12px;
+cursor:pointer;
+transition:.3s;
+border:1px solid rgba(255,255,255,0.08);
+}
+
+.gallery-grid img:hover{
+transform:scale(1.03);
+border-color:#38bdf8;
+}
+
+/* SCROLLBAR */
+.gallery-grid::-webkit-scrollbar{
+width:8px;
+}
+
+.gallery-grid::-webkit-scrollbar-track{
+background:rgba(0,0,0,0.4);
+border-radius:10px;
+}
+
+.gallery-grid::-webkit-scrollbar-thumb{
+background:linear-gradient(#38bdf8,#0ea5e9);
+border-radius:10px;
+}
+
+.gallery-grid::-webkit-scrollbar-thumb:hover{
+background:#60d5ff;
+}
+/* LIGHTBOX */
+.lightbox{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,0.9);
+display:none;
+align-items:center;
+justify-content:center;
+z-index:99999;
+flex-direction:column;
+}
+
+.lightbox img{
+max-width:90%;
+max-height:80%;
+border-radius:12px;
+box-shadow:0 10px 30px rgba(0,0,0,0.5);
+}
+
+.lightbox-controls{
+margin-top:15px;
+display:flex;
+gap:10px;
+}
+
+.lightbox button{
+padding:10px 14px;
+border:none;
+border-radius:8px;
+cursor:pointer;
+background:#38bdf8;
+color:#000;
+font-weight:600;
+}
+.gallery-filters{
+display:flex;
+gap:10px;
+justify-content:center;
+margin:15px 0 20px;
+flex-wrap:wrap;
+}
+
+.filter{
+padding:8px 14px;
+border-radius:8px;
+border:1px solid rgba(255,255,255,0.1);
+background:rgba(255,255,255,0.05);
+color:#fff;
+cursor:pointer;
+transition:.3s;
+}
+
+.filter.active,
+.filter:hover{
+background:#38bdf8;
+color:#000;
+}
+
+/* MASONRY STYLE */
+.gallery-grid{
+column-count:3;
+column-gap:12px;
+margin-top:10px;
+}
+
+.gallery-grid img{
+width:100%;
+margin-bottom:12px;
+border-radius:12px;
+cursor:pointer;
+transition:.3s;
+break-inside:avoid;
+border:1px solid rgba(255,255,255,0.1);
+}
+
+.gallery-grid img:hover{
+transform:scale(1.02);
+border-color:#38bdf8;
+}
+
+/* MOBILE */
+@media(max-width:768px){
+.gallery-grid{
+column-count:2;
+}
+}
+@media(max-width:500px){
+.gallery-grid{
+column-count:1;
+}
+}
+
+
+/* LIGHTBOX IMPROVED */
+.lightbox{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,0.92);
+display:none;
+align-items:center;
+justify-content:center;
+flex-direction:column;
+z-index:99999;
+animation:fade .2s ease;
+}
+
+.lightbox img{
+max-width:92%;
+max-height:80%;
+border-radius:14px;
+}
+
+.lightbox-controls{
+margin-top:15px;
+display:flex;
+gap:10px;
+}
+
+.lightbox button{
+padding:10px 14px;
+border:none;
+border-radius:8px;
+cursor:pointer;
+background:#38bdf8;
+color:#000;
+font-weight:600;
+}
+/* BLUR UP LOADING */
+.gallery-grid img{
+filter: blur(8px);
+transform: scale(1.02);
+transition: filter .5s ease, transform .3s ease;
+}
+
+.gallery-grid img.loaded{
+filter: blur(0);
+transform: scale(1);
+}
+
+/* THUMBNAILS */
+.thumb-strip{
+display:flex;
+gap:8px;
+margin-top:12px;
+overflow-x:auto;
+padding:5px;
+}
+
+.thumb-strip img{
+width:60px;
+height:50px;
+object-fit:cover;
+border-radius:8px;
+cursor:pointer;
+opacity:.6;
+border:1px solid transparent;
+transition:.3s;
+}
+
+.thumb-strip img.active{
+opacity:1;
+border-color:#38bdf8;
+}
+
+/* SLIDESHOW BUTTON */
+.slideshow-btn{
+background:#38bdf8;
+color:#000;
+border:none;
+padding:8px 12px;
+border-radius:8px;
+cursor:pointer;
+font-weight:600;
+}
 </style>
 </head>
 
@@ -893,6 +1121,7 @@ margin-top:-20px;
 <a href="#" onclick="openPanel('coffee');closeMenu()">Coffee</a>
 <a href="#" onclick="openPanel('snacks');closeMenu()">Snacks</a>
 <a href="#" onclick="openPanel('meals');closeMenu()">Meals</a>
+<a href="#" onclick="openPanel('gallery');closeMenu()">Gallery</a>
 </div>
 
 <div class="back-btn" onclick="goHome()">← Back</div>
@@ -998,6 +1227,7 @@ margin-top:-20px;
 <div class="snack-item">White Choco Mocha <span>M 90 | L 100 | XL 110</span></div>
 <div class="snack-item">Caramel Macchiato <span>M 90 | L 100 | XL 110</span></div>
 <div class="snack-item">Matcha Espresso <span>M 100 | L 110 | XL 120</span></div>
+<div class="snack-item">Biscoff Latte <span>M 120 | L 130 | XL 140</span></div>
 
 </div>
 
@@ -1117,6 +1347,7 @@ margin-top:-20px;
 <div class="snack-block">
 <h3>🍛 Rice Meals</h3>
 
+<div class="snack-item">The Boss Supreme Platter <span>₱599</span></div>
 <div class="snack-item">Chicken Siomai w/ Rice <span>₱79</span></div>
 <div class="snack-item">Pork Siomai w/ Rice <span>₱79</span></div>
 <div class="snack-item">Sharkfin Siomai w/ Rice <span>₱79</span></div>
@@ -1170,9 +1401,69 @@ margin-top:-20px;
 </div>
 </div>
 
+<div id="gallery" class="panel">
+
+<h2>Gallery</h2>
+<p class="desc">Our drinks, food & cafe ambiance</p>
+
+<!-- FILTERS -->
+<div class="gallery-filters">
+<button class="filter active" onclick="filterGallery('all', this)">All</button>
+<button class="filter" onclick="filterGallery('drinks', this)">Drinks</button>
+<button class="filter" onclick="filterGallery('food', this)">Food</button>
+<button class="filter" onclick="filterGallery('place', this)">Place</button>
+</div>
+
+<div class="gallery-grid">
+
+<div id="drinkGallery"></div>
+<div id="foodGallery"></div>
+<div id="placeGallery"></div>
+</div>
+</div>
+
 </div>
 
 <script>
+const drinkGallery = document.getElementById("drinkGallery");
+
+for(let i = 1; i <= 74; i++){
+const img = document.createElement("img");
+
+img.src = i + ".jpg";
+img.loading = "lazy";
+img.className = "drinks";
+
+img.onclick = () => openLightbox(img.src);
+
+drinkGallery.appendChild(img);
+}
+const foodGallery = document.getElementById("foodGallery");
+
+for(let i = 76; i <= 134; i++){
+const img = document.createElement("img");
+
+img.src = i + ".jpg";
+img.loading = "lazy";
+img.className = "food";
+
+img.onclick = () => openLightbox(img.src);
+
+foodGallery.appendChild(img);
+}
+const placeGallery = document.getElementById("placeGallery");
+
+for(let i = 301; i <= 350; i++){
+const img = document.createElement("img");
+
+img.src = i + ".jpg";
+img.loading = "lazy";
+img.className = "place";
+
+img.onclick = () => openLightbox(img.src);
+
+placeGallery.appendChild(img);
+}
 
 const home=document.getElementById("home");
 const panels=document.querySelectorAll(".panel");
@@ -1200,6 +1491,132 @@ menu.classList.toggle("active");
 function closeMenu(){
 menu.classList.remove("active");
 }
+function filterGallery(type, btn){
+document.querySelectorAll(".filter").forEach(b=>b.classList.remove("active"));
+
+btn.classList.add("active");
+
+document.querySelectorAll("#gallery img").forEach(img=>{
+if(type==="all" || img.classList.contains(type)){
+img.style.display="block";
+}else{
+img.style.display="none";
+}
+});
+}
+
+let images = [];
+let currentIndex = 0;
+let slideshow = null;
+
+function updateImages(){
+const imgs = document.querySelectorAll("#gallery img");
+images = [...imgs].map(img => img.src);
+
+imgs.forEach(img=>{
+img.classList.remove("loaded");
+img.onload = ()=> img.classList.add("loaded");
+if(img.complete) img.classList.add("loaded");
+});
+}
+
+updateImages();
+
+/* OPEN LIGHTBOX */
+function openLightbox(src){
+updateImages();
+currentIndex = images.indexOf(src);
+
+document.getElementById("lightbox").style.display="flex";
+document.getElementById("lightbox-img").src = src;
+
+renderThumbnails();
+}
+
+/* CLOSE */
+function closeLightbox(){
+document.getElementById("lightbox").style.display="none";
+stopSlideshow();
+}
+
+/* NAVIGATION */
+function nextImage(){
+currentIndex = (currentIndex + 1) % images.length;
+updateLightbox();
+}
+
+function prevImage(){
+currentIndex = (currentIndex - 1 + images.length) % images.length;
+updateLightbox();
+}
+
+function updateLightbox(){
+document.getElementById("lightbox-img").src = images[currentIndex];
+highlightThumb();
+}
+
+/* THUMBNAILS */
+function renderThumbnails(){
+const strip = document.getElementById("thumbStrip");
+strip.innerHTML="";
+
+images.forEach((src,i)=>{
+const img=document.createElement("img");
+img.src=src;
+img.onclick=()=>{currentIndex=i;updateLightbox();};
+if(i===currentIndex) img.classList.add("active");
+strip.appendChild(img);
+});
+}
+
+function highlightThumb(){
+document.querySelectorAll(".thumb-strip img").forEach((img,i)=>{
+img.classList.toggle("active", i===currentIndex);
+});
+}
+
+/* SLIDESHOW */
+function toggleSlideshow(){
+if(slideshow){
+stopSlideshow();
+} else {
+startSlideshow();
+}
+}
+
+function startSlideshow(){
+slideshow = setInterval(nextImage, 2500);
+document.querySelector(".slideshow-btn").innerText="Pause";
+}
+
+function stopSlideshow(){
+clearInterval(slideshow);
+slideshow=null;
+document.querySelector(".slideshow-btn").innerText="Play";
+}
+
+/* SWIPE SUPPORT */
+let startX=0;
+
+document.getElementById("lightbox").addEventListener("touchstart", e=>{
+startX = e.touches[0].clientX;
+});
+
+document.getElementById("lightbox").addEventListener("touchend", e=>{
+let endX = e.changedTouches[0].clientX;
+
+if(startX - endX > 50) nextImage();
+if(endX - startX > 50) prevImage();
+});
+
+/* KEYBOARD */
+document.addEventListener("keydown", e=>{
+if(document.getElementById("lightbox").style.display==="flex"){
+if(e.key==="Escape") closeLightbox();
+if(e.key==="ArrowRight") nextImage();
+if(e.key==="ArrowLeft") prevImage();
+}
+});
 
 </script><br><br>
 <footer>
@@ -1222,6 +1639,22 @@ document.querySelectorAll(".tab-btn").forEach(b=>b.classList.remove("active"));
 
 event.target.classList.add("active");
 }
+
 </script>
+<div class="lightbox" id="lightbox">
+
+<img id="lightbox-img">
+
+<div class="lightbox-controls">
+<button onclick="prevImage()">Prev</button>
+<button onclick="nextImage()">Next</button>
+<button onclick="toggleSlideshow()" class="slideshow-btn">Play</button>
+<button onclick="closeLightbox()">Close</button>
+</div>
+
+<!-- THUMBNAILS -->
+<div class="thumb-strip" id="thumbStrip"></div>
+
+</div>
 </body>
 </html>
