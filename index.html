@@ -206,24 +206,84 @@ transition:all .25s ease;
 }
 
 /* active */
-.menu.active{
+.hamburger{
+width:38px;
+height:34px;
+display:flex;
+flex-direction:column;
+justify-content:center;
+gap:6px;
+cursor:pointer;
+z-index:10000;
+}
+.menu a{
+opacity:0;
+transform:translateX(20px);
+transition:.35s ease;
+}
+
+/* stagger animation */
+.menu.active a{
 opacity:1;
-transform:translateY(0) scale(1);
+transform:translateX(0);
+}
+
+.menu.active a:nth-child(1){transition-delay:.05s;}
+.menu.active a:nth-child(2){transition-delay:.1s;}
+.menu.active a:nth-child(3){transition-delay:.15s;}
+.menu.active a:nth-child(4){transition-delay:.2s;}
+.menu.active a:nth-child(5){transition-delay:.25s;}
+.menu.active a:nth-child(6){transition-delay:.3s;}
+
+/* ===== TOUCH FEEDBACK ===== */
+.menu a:active{
+transform:scale(0.96);
+background:rgba(56,189,248,0.2);
+}
+
+/* ===== OVERLAY BACKDROP ===== */
+.nav-overlay{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,0.4);
+backdrop-filter:blur(4px);
+
+opacity:0;
+pointer-events:none;
+
+transition:.3s;
+z-index:9998;
+}
+
+.nav-overlay.active{
+opacity:1;
 pointer-events:auto;
 }
-.hamburger{
-background:rgba(0,0,0,0.35);
-border:1px solid rgba(255,255,255,0.1);
-backdrop-filter:blur(10px);
-border-radius:10px;
-padding:6px 10px;
-transition:.2s;
+
+.hamburger span{
+display:block;
+height:3px;
+width:100%;
+background:#fff;
+border-radius:3px;
+transition:all .35s ease;
 }
 
 .hamburger:hover{
 border-color:#38bdf8;
 color:#38bdf8;
 transform:scale(1.05);
+}
+.hamburger.active span:nth-child(1){
+transform:translateY(9px) rotate(45deg);
+background:#38bdf8;
+}
+.hamburger.active span:nth-child(2){
+opacity:0;
+}
+.hamburger.active span:nth-child(3){
+transform:translateY(-9px) rotate(-45deg);
+background:#38bdf8;
 }
 /* links */
 .menu a{
@@ -460,21 +520,41 @@ grid-template-rows:auto;
 @media(max-width:768px){
 
 .menu{
-display:none;
-position:absolute;
+position:fixed;
 top:70px;
-right:20px;
+right:15px;
+width:220px;
+
+display:flex;
 flex-direction:column;
-background:rgba(0,0,0,.9);
+gap:10px;
+
 padding:15px;
-border-radius:12px;
-width:200px;
+
+border-radius:18px;
+
+background:rgba(0,0,0,0.45);
+backdrop-filter:blur(18px);
+
+border:1px solid rgba(255,255,255,0.1);
+
+box-shadow:0 20px 50px rgba(0,0,0,0.5);
+
+/* animation base */
+opacity:0;
+transform:translateY(-20px) scale(0.9);
+pointer-events:none;
+
+transition:
+transform .35s cubic-bezier(.2,.8,.2,1),
+opacity .25s ease;
 }
 
 .menu.active{
-display:flex;
+opacity:1;
+transform:translateY(0) scale(1);
+pointer-events:auto;
 }
-
 .hamburger{
 display:block;
 }
@@ -1263,6 +1343,11 @@ padding:8px 10px;
 font-size:12px;
 }
 }
+#lightbox-img{
+transition: transform .25s ease, opacity .25s ease;
+will-change: transform;
+touch-action: none;
+}
 </style>
 </head>
 
@@ -1270,9 +1355,14 @@ font-size:12px;
 
 <!-- NAV -->
 <nav>
+<div class="nav-overlay" id="navOverlay" onclick="closeMenu()"></div>
 <h1>TEABOSS CAFE</h1>
 
-<div class="hamburger" onclick="toggleMenu()">☰</div>
+<div class="hamburger" onclick="toggleMenu(this)">
+<span></span>
+<span></span>
+<span></span>
+</div>
 
 <div class="menu" id="menu">
 <a href="#" onclick="goHome();closeMenu()">Home</a>
@@ -1915,6 +2005,52 @@ if(e.key==="ArrowLeft") prevImage();
 });
 
 
+</script>
+<script>
+function toggleMenu(btn){
+const menu = document.getElementById("menu");
+const overlay = document.getElementById("navOverlay");
+
+menu.classList.toggle("active");
+overlay.classList.toggle("active");
+
+btn.classList.toggle("active");
+}
+
+function closeMenu(){
+const menu = document.getElementById("menu");
+const overlay = document.getElementById("navOverlay");
+const burger = document.querySelector(".hamburger");
+
+menu.classList.remove("active");
+overlay.classList.remove("active");
+burger.classList.remove("active");
+}
+
+/* CLOSE ON CLICK OUTSIDE */
+document.addEventListener("click", (e)=>{
+const menu = document.getElementById("menu");
+const burger = document.querySelector(".hamburger");
+
+if(!menu.contains(e.target) && !burger.contains(e.target)){
+closeMenu();
+}
+});
+
+/* SWIPE UP TO CLOSE (mobile feel) */
+let startY = 0;
+
+document.getElementById("menu").addEventListener("touchstart", e=>{
+startY = e.touches[0].clientY;
+});
+
+document.getElementById("menu").addEventListener("touchend", e=>{
+let diff = startY - e.changedTouches[0].clientY;
+
+if(diff > 60){
+closeMenu();
+}
+});
 </script><br><br>
 <footer>
 <h3>Contact Us</h3>
@@ -1940,41 +2076,171 @@ event.target.classList.add("active");
 
 </script>
 <script>
+let images = [];
+let currentIndex = 0;
+
 let startX = 0;
-let endX = 0;
+let currentX = 0;
+let isDragging = false;
 
-const lightbox = document.getElementById("lightbox");
+let scale = 1;
+let startDistance = 0;
 
-/* TOUCH START */
-lightbox.addEventListener("touchstart", function(e){
+/* LOAD IMAGES */
+function updateImages(){
+images = [...document.querySelectorAll("#gallery img")]
+.map(img=>img.src);
+}
+
+/* OPEN */
+function openLightbox(src){
+updateImages();
+currentIndex = images.indexOf(src);
+
+const box = document.getElementById("lightbox");
+const img = document.getElementById("lightbox-img");
+
+img.src = src;
+box.style.display = "flex";
+
+/* reset */
+scale = 1;
+img.style.transform = "translateX(0) scale(1)";
+}
+
+/* CLOSE */
+function closeLightbox(){
+document.getElementById("lightbox").style.display = "none";
+}
+
+/* =========================
+   SMOOTH DRAG SWIPE
+========================= */
+const img = document.getElementById("lightbox-img");
+
+/* START */
+img.addEventListener("touchstart", e=>{
+if(e.touches.length === 1){
 startX = e.touches[0].clientX;
-});
+isDragging = true;
+}
+if(e.touches.length === 2){
+startDistance = getDistance(e.touches);
+}
+},{passive:true});
 
-/* TOUCH END */
-lightbox.addEventListener("touchend", e=>{
-if(isZoomed()) return; // disable swipe while zoomed
+/* MOVE */
+img.addEventListener("touchmove", e=>{
 
-let endX = e.changedTouches[0].clientX;
-let diff = startX - endX;
+/* PINCH ZOOM */
+if(e.touches.length === 2){
+e.preventDefault();
 
-if(diff > 50) nextImage();
-else if(diff < -50) prevImage();
-});
+let newDistance = getDistance(e.touches);
+scale += (newDistance - startDistance) * 0.004;
 
-function handleSwipe(){
-let diff = startX - endX;
+scale = Math.max(1, Math.min(scale, 3));
 
-/* swipe left → next */
-if(diff > 50){
+img.style.transform = `translateX(0) scale(${scale})`;
+
+startDistance = newDistance;
+return;
+}
+
+/* DRAG SWIPE (only if not zoomed) */
+if(!isDragging || scale > 1) return;
+
+currentX = e.touches[0].clientX;
+let diff = currentX - startX;
+
+/* FOLLOW FINGER */
+img.style.transition = "none";
+img.style.transform = `translateX(${diff}px) scale(1)`;
+
+},{passive:false});
+
+/* END */
+img.addEventListener("touchend", e=>{
+
+if(scale > 1){
+isDragging = false;
+return;
+}
+
+let diff = currentX - startX;
+
+/* SNAP LOGIC */
+if(diff < -80){
 nextImage();
 }
-
-/* swipe right → prev */
-if(diff < -50){
+else if(diff > 80){
 prevImage();
 }
+else{
+/* RESET POSITION */
+img.style.transition = "all .25s ease";
+img.style.transform = "translateX(0)";
 }
 
+isDragging = false;
+});
+
+/* =========================
+   IMAGE CHANGE ANIMATION
+========================= */
+function nextImage(){
+currentIndex = (currentIndex + 1) % images.length;
+animateSlide("left");
+}
+
+function prevImage(){
+currentIndex = (currentIndex - 1 + images.length) % images.length;
+animateSlide("right");
+}
+
+function animateSlide(direction){
+const img = document.getElementById("lightbox-img");
+
+/* slide out */
+img.style.transition = "all .25s ease";
+img.style.transform = direction==="left"
+? "translateX(-120px) scale(1)"
+: "translateX(120px) scale(1)";
+img.style.opacity = "0";
+
+setTimeout(()=>{
+img.src = images[currentIndex];
+
+/* slide in */
+img.style.transition = "none";
+img.style.transform = direction==="left"
+? "translateX(120px)"
+: "translateX(-120px)";
+img.style.opacity = "0";
+
+setTimeout(()=>{
+img.style.transition = "all .25s ease";
+img.style.transform = "translateX(0)";
+img.style.opacity = "1";
+},20);
+
+},200);
+}
+
+/* =========================
+   PINCH HELPER
+========================= */
+function getDistance(touches){
+let dx = touches[0].clientX - touches[1].clientX;
+let dy = touches[0].clientY - touches[1].clientY;
+return Math.sqrt(dx*dx + dy*dy);
+}
+
+/* DOUBLE TAP RESET */
+img.addEventListener("dblclick", ()=>{
+scale = 1;
+img.style.transform = "translateX(0) scale(1)";
+});
 </script>
 <div class="lightbox" id="lightbox" onclick="toggleUI()">
 
